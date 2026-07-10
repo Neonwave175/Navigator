@@ -1,2 +1,2 @@
-# ARtED
-A Respone to Emergency Drone
+# Navigator
+Head cam for the blind
