@@ -1,3 +1,4 @@
 push.sh
 .zed/
 .venv/
+Server/__pycache__/
