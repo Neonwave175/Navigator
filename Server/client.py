@@ -8,13 +8,11 @@ key = e.buildkey(KEYSEED)
 
 
 async def send_image(path):
+    encrypted_bytes = e.encrypt_image(path, key)
     async with websockets.connect("ws://127.0.0.1:8765") as ws:
-        with open(path, "rb") as f:
-            image_bytes = f.read()
-        await ws.send(image_bytes)
+        await ws.send(encrypted_bytes)
         response = await ws.recv()
         print(response)
 
 
-e.encrypt_image("images/newt.jpg", key, "photo.enc")
-asyncio.run(send_image("photo.enc"))
+asyncio.run(send_image("images/newt.jpg"))

@@ -24,21 +24,15 @@ def buildkey(skey: int) -> bytes:
     return keygen(secret, salt)
 
 
-def encrypt_image(image_path: str, key: bytes, output_path: str):
+def encrypt_image(image_path: str, key: bytes) -> bytes:
     with open(image_path, "rb") as f:
         image_bytes = f.read()
     nonce = os.urandom(12)
     ciphertext = AESGCM(key).encrypt(nonce, image_bytes, None)
-    with open(output_path, "wb") as f:
-        f.write(nonce)
-        f.write(ciphertext)
+    return nonce + ciphertext
 
 
-def decrypt_image(encrypted_path: str, key: bytes, output_path: str):
-    with open(encrypted_path, "rb") as f:
-        data = f.read()
-    nonce = data[:12]
-    ciphertext = data[12:]
-    image_bytes = AESGCM(key).decrypt(nonce, ciphertext, None)
-    with open(output_path, "wb") as f:
-        f.write(image_bytes)
+def decrypt_image(encrypted_bytes: bytes, key: bytes) -> bytes:
+    nonce = encrypted_bytes[:12]
+    ciphertext = encrypted_bytes[12:]
+    return AESGCM(key).decrypt(nonce, ciphertext, None)
