@@ -17,7 +17,7 @@ messages = [
             {"type": "image"},
             {
                 "type": "text",
-                "text": "Describe this images and tell me who this person is",
+                "text": "Never Gonne Give You Up",
             },
         ],
     }
