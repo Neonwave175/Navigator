@@ -1,11 +1,10 @@
 import asyncio
 
+import encrypt as e
 import websockets
 
-import encrypt as e
-
-SHARED_KEY_SEED = 2342344554623453242345234634577674354634563456567467564674567456
-key = e.buildkey(SHARED_KEY_SEED)
+KEYSEED = 2342344554623453242345234634577674354634563456567467564674567456
+key = e.buildkey(KEYSEED)
 
 
 async def send_image(path):
