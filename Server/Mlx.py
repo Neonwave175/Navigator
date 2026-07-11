@@ -8,7 +8,7 @@ warnings.filterwarnings("ignore", message=".*mel filter.*")
 model, processor = load("mlx-community/gemma-4-26b-a4b-it-mxfp4")
 
 # This is the location of the image, edit this if needed
-image_path = "images/SteveJobs.jpg"
+image_path = "images/Linus.jpg"
 
 messages = [
     {
@@ -17,7 +17,7 @@ messages = [
             {"type": "image"},
             {
                 "type": "text",
-                "text": "Never Gonne Give You Up",
+                "text": "Describe this image",
             },
         ],
     }
