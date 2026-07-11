@@ -16,6 +16,7 @@ model, processor, config = mlx_infer.load_model(MODEL_PATH)
 async def handler(websocket):
     async for message in websocket:
         if isinstance(message, bytes):
+            print(f"Recieved Image: {len(message)}bytes")
             image_bytes = e.decrypt_image(message, key)
             print(f"Decrypted image, {len(image_bytes)} bytes")
 
@@ -24,7 +25,7 @@ async def handler(websocket):
                 f.write(image_bytes)
 
             result = mlx_infer.run(model, processor, config, "photo_decrypted.jpg")
-            print(f"Inference result: {result}")
+            # print(f"Inference result: {result}")
             await websocket.send(result)
         else:
             print(f"Text message: {message}")
