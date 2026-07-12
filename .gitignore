@@ -4,3 +4,4 @@ push.sh
 Server/__pycache__/
 Server/encrypted/
 Server/decrypted/
+Server/photo_decrypted.jpg
