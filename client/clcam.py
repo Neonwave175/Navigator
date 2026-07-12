@@ -40,9 +40,9 @@ class NonBlockingTTY:
         return None
 
 def main():
-    print("Starting clcam...")
-    print("Press 's' in the terminal (or in the CV2 window) to capture and send an image to the server.")
-    print("Press 'q' in the terminal or Escape/q in the CV2 window to exit.")
+    print("Starting clcam (Headless Mode on Pi 5)...")
+    print("Press 's' in the terminal to capture and send an image to the server.")
+    print("Press 'q' in the terminal to exit.")
 
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
@@ -54,20 +54,17 @@ def main():
     try:
         with NonBlockingTTY() as tty_input:
             while True:
+                # Grab the frame to keep the buffer fresh
                 ret, frame = cap.read()
                 if not ret:
                     print("Error: Failed to grab frame.")
                     break
 
-                cv2.imshow("Camera Feed - clcam", frame)
-
-                # Check keypress from OpenCV window
-                cv_key = cv2.waitKey(1) & 0xFF
                 # Check keypress from Terminal
                 term_key = tty_input.get_key()
 
-                action_s = (term_key == 's') or (cv_key == ord('s'))
-                action_q = (term_key == 'q') or (cv_key == ord('q') or cv_key == 27)
+                action_s = (term_key == 's')
+                action_q = (term_key == 'q')
 
                 if action_s:
                     print("\n's' pressed! Capturing frame and sending...")
@@ -81,14 +78,13 @@ def main():
                             os.remove(temp_img_path)
                         except OSError:
                             pass
-                    print("Resuming camera feed...")
+                    print("Resuming camera capture...")
 
                 if action_q:
                     print("\nExiting clcam...")
                     break
     finally:
         cap.release()
-        cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     main()
