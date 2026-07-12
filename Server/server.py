@@ -32,8 +32,8 @@ async def handler(websocket):
 
 
 async def main():
-    async with websockets.serve(handler, "127.0.0.1", 8765):
-        print("Listening on ws://127.0.0.1:8765")
+    async with websockets.serve(handler, "192.168.68.59", 8765):
+        print("Listening on ws://192.168.68.59:8765")
         await asyncio.Future()
 
 
