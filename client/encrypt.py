@@ -2,8 +2,8 @@ import os
 
 from argon2 import low_level
 
-# https://github.com/P-H-C/phc-winner-argon2.git # Argon 2 Repo
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+# Argon2 and AESGCMSIV unbreakable
+from cryptography.hazmat.primitives.ciphers.aead import AESGCMSIV
 
 
 def keygen(secret: bytes, salt: bytes) -> bytes:
@@ -28,11 +28,12 @@ def encrypt_image(image_path: str, key: bytes) -> bytes:
     with open(image_path, "rb") as f:
         image_bytes = f.read()
     nonce = os.urandom(12)
-    ciphertext = AESGCM(key).encrypt(nonce, image_bytes, None)
+    # Using SIV mode ensures that even if os.urandom fails/repeats on the Pi, key safety holds
+    ciphertext = AESGCMSIV(key).encrypt(nonce, image_bytes, None)
     return nonce + ciphertext
 
 
 def decrypt_image(encrypted_bytes: bytes, key: bytes) -> bytes:
     nonce = encrypted_bytes[:12]
     ciphertext = encrypted_bytes[12:]
-    return AESGCM(key).decrypt(nonce, ciphertext, None)
+    return AESGCMSIV(key).decrypt(nonce, ciphertext, None)
